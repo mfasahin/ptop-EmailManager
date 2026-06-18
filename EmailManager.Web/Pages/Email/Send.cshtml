@@ -1,0 +1,155 @@
+@page
+@model EmailManager.Web.Pages.Email.SendModel
+@{
+    ViewData["Title"] = "E-posta Gönder";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="bi bi-send-fill text-primary"></i>
+                Yeni E-posta Oluştur
+            </div>
+            <div class="card-body p-4">
+                <form id="sendEmailForm" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <!-- Alıcı -->
+                    <div class="mb-3">
+                        <label for="recipientTo" class="form-label fw-medium">
+                            <i class="bi bi-person me-1 text-muted"></i>Alıcı (To)
+                        </label>
+                        <input type="email" class="form-control" id="recipientTo"
+                               name="to" placeholder="ornek@domain.com"
+                               required autocomplete="off" />
+                        <div class="invalid-feedback">Geçerli bir e-posta adresi giriniz.</div>
+                    </div>
+
+                    <!-- Konu -->
+                    <div class="mb-3">
+                        <label for="emailSubject" class="form-label fw-medium">
+                            <i class="bi bi-tag me-1 text-muted"></i>Konu
+                        </label>
+                        <input type="text" class="form-control" id="emailSubject"
+                               name="subject" placeholder="E-posta konusu"
+                               required maxlength="512" />
+                        <div class="invalid-feedback">Konu alanı zorunludur.</div>
+                    </div>
+
+                    <!-- Gövde -->
+                    <div class="mb-3">
+                        <label for="emailBody" class="form-label fw-medium">
+                            <i class="bi bi-text-paragraph me-1 text-muted"></i>Mesaj
+                        </label>
+                        <!--
+                            TODO: Rich text editör entegrasyonu için bu alanı değiştirin.
+                            Örnek: TinyMCE → <textarea id="emailBody" ...> + tinymce.init({ selector: '#emailBody' })
+                            Örnek: Quill.js → <div id="quill-editor"></div> + new Quill('#quill-editor', {...})
+                        -->
+                        <textarea class="form-control" id="emailBody" name="body"
+                                  rows="10" placeholder="Mesajınızı buraya yazın..."
+                                  required style="resize: vertical; font-family: inherit;"></textarea>
+                        <div class="invalid-feedback">Mesaj içeriği zorunludur.</div>
+                    </div>
+
+                    <!-- HTML seçeneği -->
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isHtml" name="isHtml" />
+                            <label class="form-check-label text-muted" for="isHtml">
+                                <i class="bi bi-code-slash me-1"></i>HTML içerik olarak gönder
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-flex gap-2">
+                        <button type="submit" id="sendBtn" class="btn btn-primary px-4">
+                            <span id="sendBtnText">
+                                <i class="bi bi-send me-2"></i>Gönder
+                            </span>
+                            <span id="sendBtnLoading" class="d-none">
+                                <span class="spinner-border spinner-border-sm me-2"></span>Gönderiliyor...
+                            </span>
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary px-4">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>Temizle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- İpuçları -->
+        <div class="card mt-3">
+            <div class="card-body py-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    E-posta gönderimi dakikada <strong>5</strong> istekle sınırlıdır.
+                    Geçmiş gönderimlerinizi
+                    <a href="/Email/History" class="text-decoration-none">Gönderim Geçmişi</a> sayfasından görebilirsiniz.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+const form = document.getElementById('sendEmailForm');
+const sendBtn = document.getElementById('sendBtn');
+
+form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
+
+    // Butonu yükleniyor moduna al
+    document.getElementById('sendBtnText').classList.add('d-none');
+    document.getElementById('sendBtnLoading').classList.remove('d-none');
+    sendBtn.disabled = true;
+
+    const payload = {
+        to: document.getElementById('recipientTo').value.trim(),
+        subject: document.getElementById('emailSubject').value.trim(),
+        body: document.getElementById('emailBody').value,
+        isHtml: document.getElementById('isHtml').checked
+    };
+
+    try {
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+        const response = await fetch('/Email/Send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token ?? ''
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showToast('✓ E-posta başarıyla gönderildi!', 'success');
+            form.reset();
+            form.classList.remove('was-validated');
+        } else if (response.status === 429) {
+            showToast('⏱ Çok fazla istek! Lütfen bir dakika bekleyin.', 'error');
+        } else {
+            showToast(data.message ?? 'E-posta gönderilemedi. Lütfen tekrar deneyin.', 'error');
+        }
+    } catch (err) {
+        showToast('Bağlantı hatası. Lütfen internet bağlantınızı kontrol edin.', 'error');
+    } finally {
+        document.getElementById('sendBtnText').classList.remove('d-none');
+        document.getElementById('sendBtnLoading').classList.add('d-none');
+        sendBtn.disabled = false;
+    }
+});
+</script>
+}
