@@ -28,3 +28,4 @@ C:\Users\fatih\projelerim\ptop\EmailManager.Application\obj\Debug\net8.0\EmailMa
 C:\Users\fatih\projelerim\ptop\EmailManager.Application\obj\Debug\net8.0\refint\EmailManager.Application.dll
 C:\Users\fatih\projelerim\ptop\EmailManager.Application\obj\Debug\net8.0\EmailManager.Application.pdb
 C:\Users\fatih\projelerim\ptop\EmailManager.Application\obj\Debug\net8.0\ref\EmailManager.Application.dll
+C:\Users\fatih\projelerim\ptop\EmailManager.Application\obj\Debug\net8.0\EmailManager.Application.sourcelink.json

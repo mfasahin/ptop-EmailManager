@@ -186,18 +186,40 @@
 <nav class="sidebar">
     <div class="sidebar-brand">
         <h4><i class="bi bi-envelope-fill me-2" style="color: var(--primary);"></i>Email Manager</h4>
-        <span>v1.0 — Yönetim Paneli</span>
+        <span>@(User.IsInRole("Admin") ? "Admin Paneli" : "Kullanıcı Paneli")</span>
     </div>
     <div class="sidebar-nav">
-        <div class="nav-label">E-posta</div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="nav-label">Yönetim</div>
+            <a class="nav-link @(Context.Request.Path == "/Admin" || Context.Request.Path.StartsWithSegments("/Admin/Index") ? "active" : "")"
+               href="/Admin/Index">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/Users") ? "active" : "")"
+               href="/Admin/Users">
+                <i class="bi bi-people"></i> Kullanıcılar
+            </a>
+            <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Admin/AllMails") ? "active" : "")"
+               href="/Admin/AllMails">
+                <i class="bi bi-envelope-open-fill"></i> Tüm Postalar
+            </a>
+            <div class="nav-label mt-3">E-posta</div>
+        }
+        else
+        {
+            <div class="nav-label">Menü</div>
+        }
+        
         <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/Send") ? "active" : "")"
            href="/Email/Send">
-            <i class="bi bi-send"></i> E-posta Gönder
+            <i class="bi bi-send-fill"></i> E-posta Gönder
         </a>
-        <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/History") ? "active" : "")"
-           href="/Email/History">
-            <i class="bi bi-clock-history"></i> Gönderim Geçmişi
+        <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/Inbox") ? "active" : "")"
+           href="/Email/Inbox">
+            <i class="bi bi-inbox-fill"></i> Gelen Kutusu
         </a>
+        
         <div class="nav-label mt-3">Hesap</div>
         <form method="post" action="/Account/Logout" style="margin: 0.1rem 0.75rem;">
             @Html.AntiForgeryToken()
@@ -215,7 +237,7 @@
         <h1 class="topbar-title">@(ViewData["Title"] ?? "Dashboard")</h1>
         <div class="d-flex align-items-center gap-2">
             <span class="badge bg-light text-dark border" style="font-size: 0.75rem;">
-                <i class="bi bi-person-fill me-1"></i>@User.Identity?.Name
+                <i class="bi bi-person-fill me-1"></i>@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)
             </span>
         </div>
     </div>

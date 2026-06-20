@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  emailmanager-web:
+    image: emailmanager-web:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: emailmanager_web
+    restart: unless-stopped
+    ports:
+      - "5149:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - EmailSettings__Host=mailpit
+      - EmailSettings__Port=1025
+      - EmailSettings__UseSsl=false
+      - EmailSettings__UseStartTls=false
+      - EmailSettings__SenderEmail=noreply@ptop.com
+      - EmailSettings__SenderName=Ptop Mail
+      - EncryptionKey=aei+B6d4e+40pS4WB5LPWPkOZ/mlnkZBizBUeFSN1Ak=
+    volumes:
+      - emailmanager-data:/app/data
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: emailmanager_mailpit
+    restart: unless-stopped
+    ports:
+      - "8825:8025" # Mailpit Web UI (Host port updated to 8825 to avoid conflict)
+      # Host makinede 1025 portu çakışmasını önlemek için 1026 portuna yönlendiriyoruz.
+      # Docker ağı içinde web uygulaması yine mailpit:1025 üzerinden erişecektir.
+      - "1026:1025" # Mailpit SMTP (Host port updated to 1026)
+    environment:
+      - MP_MAX_MESSAGES=5000
+      - MP_DATABASE=/data/mailpit.db
+    volumes:
+      - mailpit-data:/data
+
+volumes:
+  emailmanager-data:
+  mailpit-data:

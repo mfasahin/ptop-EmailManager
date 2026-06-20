@@ -134,3 +134,96 @@ VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13
 2026-06-18 20:44:00.974 +03:00 [INF] HTTP GET / responded 404 in 0.2054 ms
 2026-06-18 20:44:01.357 +03:00 [INF] HTTP GET / responded 404 in 0.3308 ms
 2026-06-18 20:44:04.031 +03:00 [INF] Application is shutting down...
+2026-06-18 20:47:14.862 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2026-06-18 20:47:14.887 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2026-06-18 20:47:14.897 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-06-18 20:47:15.062 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedUserName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-18 20:47:15.219 +03:00 [INF] Now listening on: http://localhost:5149
+2026-06-18 20:47:15.221 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-18 20:47:15.222 +03:00 [INF] Hosting environment: Development
+2026-06-18 20:47:15.223 +03:00 [INF] Content root path: C:\Users\fatih\projelerim\ptop\EmailManager.Web
+2026-06-18 20:47:18.613 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-06-18 20:47:18.681 +03:00 [INF] HTTP GET / responded 302 in 61.8158 ms
+2026-06-18 20:47:18.711 +03:00 [INF] HTTP GET /Email/Send responded 302 in 16.2866 ms
+2026-06-18 20:47:18.835 +03:00 [INF] HTTP GET /Account/Login responded 200 in 114.6561 ms
+2026-06-18 20:47:19.241 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 1.1490 ms
+2026-06-18 20:47:30.439 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-18 20:47:30.555 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ClaimType", "a"."ClaimValue", "a"."UserId"
+FROM "AspNetUserClaims" AS "a"
+WHERE "a"."UserId" = @__user_Id_0
+2026-06-18 20:47:30.574 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a0"."Name"
+FROM "AspNetUserRoles" AS "a"
+INNER JOIN "AspNetRoles" AS "a0" ON "a"."RoleId" = "a0"."Id"
+WHERE "a"."UserId" = @__userId_0
+2026-06-18 20:47:30.579 +03:00 [INF] Kullanıcı giriş yaptı: admin
+2026-06-18 20:47:30.583 +03:00 [INF] HTTP POST /Account/Login responded 302 in 186.2897 ms
+2026-06-18 20:47:30.634 +03:00 [INF] HTTP GET /Email/Send responded 200 in 43.2279 ms
+2026-06-18 20:47:41.204 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "EmailLogs" AS "e"
+2026-06-18 20:47:41.211 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "e"."Id", "e"."ErrorMessage", "e"."SentAt", "e"."Status", "e"."Subject", "e"."To"
+FROM "EmailLogs" AS "e"
+ORDER BY "e"."SentAt" DESC
+LIMIT @__p_1 OFFSET @__p_0
+2026-06-18 20:47:41.214 +03:00 [DBG] Geçmiş sayfası yüklendi: Sayfa=1, Toplam=0
+2026-06-18 20:47:41.220 +03:00 [INF] HTTP GET /Email/History responded 200 in 85.5211 ms
+2026-06-18 20:47:42.661 +03:00 [INF] HTTP GET /Email/Send responded 200 in 12.8309 ms
+2026-06-18 20:48:13.683 +03:00 [INF] SMTP bağlantısı kuruluyor: smtp.gmail.com:587 ["StartTls"]
+2026-06-18 20:48:15.447 +03:00 [ERR] E-posta gönderilemedi → sahinmehmet01q@gmail.com: 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-4650b67a33csm468817f8f.17 - gsmtp
+MailKit.Security.AuthenticationException: 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-4650b67a33csm468817f8f.17 - gsmtp
+ ---> MailKit.Net.Smtp.SmtpCommandException: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-4650b67a33csm468817f8f.17 - gsmtp
+   --- End of inner exception stack trace ---
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at EmailManager.Infrastructure.Services.EmailService.SendAsync(EmailMessage message, CancellationToken ct) in C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\Services\EmailService.cs:line 84
+2026-06-18 20:48:15.553 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 179), @p1='?' (DbType = DateTime), @p2='?' (Size = 6), @p3='?' (Size = 6), @p4='?' (Size = 24)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EmailLogs" ("ErrorMessage", "SentAt", "Status", "Subject", "To")
+VALUES (@p0, @p1, @p2, @p3, @p4)
+RETURNING "Id";
+2026-06-18 20:48:15.585 +03:00 [ERR] HTTP POST /Email/Send responded 500 in 1973.9411 ms
+2026-06-18 20:48:19.507 +03:00 [INF] SMTP bağlantısı kuruluyor: smtp.gmail.com:587 ["StartTls"]
+2026-06-18 20:48:20.022 +03:00 [ERR] E-posta gönderilemedi → sahinmehmet01q@gmail.com: 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-465090c51c2sm529125f8f.13 - gsmtp
+MailKit.Security.AuthenticationException: 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-465090c51c2sm529125f8f.13 - gsmtp
+ ---> MailKit.Net.Smtp.SmtpCommandException: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-465090c51c2sm529125f8f.13 - gsmtp
+   --- End of inner exception stack trace ---
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at EmailManager.Infrastructure.Services.EmailService.SendAsync(EmailMessage message, CancellationToken ct) in C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\Services\EmailService.cs:line 84
+2026-06-18 20:48:20.027 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 179), @p1='?' (DbType = DateTime), @p2='?' (Size = 6), @p3='?' (Size = 6), @p4='?' (Size = 24)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EmailLogs" ("ErrorMessage", "SentAt", "Status", "Subject", "To")
+VALUES (@p0, @p1, @p2, @p3, @p4)
+RETURNING "Id";
+2026-06-18 20:48:20.030 +03:00 [ERR] HTTP POST /Email/Send responded 500 in 525.3668 ms
+2026-06-18 20:48:20.918 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "EmailLogs" AS "e"
+2026-06-18 20:48:20.921 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "e"."Id", "e"."ErrorMessage", "e"."SentAt", "e"."Status", "e"."Subject", "e"."To"
+FROM "EmailLogs" AS "e"
+ORDER BY "e"."SentAt" DESC
+LIMIT @__p_1 OFFSET @__p_0
+2026-06-18 20:48:20.941 +03:00 [DBG] Geçmiş sayfası yüklendi: Sayfa=1, Toplam=2
+2026-06-18 20:48:20.949 +03:00 [INF] HTTP GET /Email/History responded 200 in 32.0714 ms
+2026-06-18 20:48:35.272 +03:00 [INF] HTTP POST /Account/Logout responded 404 in 0.6332 ms
+2026-06-18 20:48:37.638 +03:00 [INF] HTTP POST /Account/Logout responded 404 in 0.8250 ms
+2026-06-18 20:48:39.730 +03:00 [INF] HTTP GET /Account/Login responded 200 in 3.0071 ms

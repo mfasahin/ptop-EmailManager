@@ -26,12 +26,40 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Admin/AllMails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWxsTWFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Email/History.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1haWxcSGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Email/Inbox.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1haWxcSW5ib3guY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Email/Send.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1haWxcU2VuZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Email/Sent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1haWxcU2VudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/fatih/projelerim/ptop/EmailManager.Web/Pages/Shared/_Layout.cshtml]

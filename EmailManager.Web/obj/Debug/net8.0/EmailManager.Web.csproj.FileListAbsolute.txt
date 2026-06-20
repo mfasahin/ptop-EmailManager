@@ -317,3 +317,4 @@ C:\Users\fatih\projelerim\ptop\EmailManager.Web\obj\Debug\net8.0\EmailManager.We
 C:\Users\fatih\projelerim\ptop\EmailManager.Web\obj\Debug\net8.0\EmailManager.Web.genruntimeconfig.cache
 C:\Users\fatih\projelerim\ptop\EmailManager.Web\obj\Debug\net8.0\ref\EmailManager.Web.dll
 C:\Users\fatih\projelerim\ptop\EmailManager.Web\bin\Debug\net8.0\EmailManager.Web.staticwebassets.runtime.json
+C:\Users\fatih\projelerim\ptop\EmailManager.Web\obj\Debug\net8.0\EmailManager.Web.sourcelink.json

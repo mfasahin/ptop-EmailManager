@@ -42,6 +42,7 @@ public class SendModel : PageModel
 
         var message = new EmailMessage
         {
+            From = User.FindFirst("PtopEmail")?.Value ?? $"{User.Identity?.Name}@ptop.com",
             To = input.To,
             Subject = input.Subject,
             Body = input.Body,

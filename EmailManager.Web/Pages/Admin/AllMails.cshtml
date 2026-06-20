@@ -1,0 +1,246 @@
+@page
+@model EmailManager.Web.Pages.Admin.AllMailsModel
+@{
+    ViewData["Title"] = "Tüm Postalar";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-slate-800 fw-bold"><i class="bi bi-envelope-open-fill text-indigo me-2"></i>Tüm Postalar (Denetim)</h5>
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill">Admin yetkisi ile izleniyor</span>
+                </div>
+            </div>
+            
+            <!-- Tabs Navigation -->
+            <div class="bg-light px-3 pt-2 border-bottom">
+                <ul class="nav nav-tabs border-0" id="mailTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link border-0 py-2.5 @(Model.ActiveTab == "internal" ? "active fw-bold text-indigo" : "text-muted")" 
+                           href="?tab=internal&page=1">
+                            <i class="bi bi-shield-lock-fill me-1 text-success"></i> Dahili Postalar
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link border-0 py-2.5 @(Model.ActiveTab == "external" ? "active fw-bold text-indigo" : "text-muted")" 
+                           href="?tab=external&page=1">
+                            <i class="bi bi-cloud-arrow-up-fill me-1 text-primary"></i> Dış Posta Logları (SMTP)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body p-0">
+                @if (Model.ActiveTab == "internal")
+                {
+                    <!-- INTERNAL MAILS TAB -->
+                    @if (!Model.InternalMails.Any())
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-envelope-open" style="font-size: 2.5rem;"></i>
+                            <p class="mt-2 mb-0">Kayıtlı dahili posta bulunmamaktadır.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 25%;">Kimden</th>
+                                        <th style="width: 25%;">Kime</th>
+                                        <th style="width: 35%;">Konu (Deşifre edilmiş)</th>
+                                        <th style="width: 15%;">Tarih</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var mail in Model.InternalMails)
+                                    {
+                                        <tr onclick="viewInternalMail(@mail.Id)" style="cursor: pointer;">
+                                            <td class="text-truncate">@mail.FromEmail</td>
+                                            <td class="text-truncate">@mail.ToEmail</td>
+                                            <td class="text-truncate fw-medium text-dark">
+                                                <i class="bi bi-lock-fill text-success small me-1"></i>@mail.Subject
+                                            </td>
+                                            <td class="small text-muted text-truncate">@mail.SentAt.ToString("g")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- EXTERNAL LOGS TAB -->
+                    @if (!Model.ExternalLogs.Any())
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-cloud-slash" style="font-size: 2.5rem;"></i>
+                            <p class="mt-2 mb-0">Dış SMTP log kaydı bulunmamaktadır.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Alıcı (To)</th>
+                                        <th>Konu (Subject)</th>
+                                        <th>Tarih</th>
+                                        <th>Durum</th>
+                                        <th>Hata Mesajı</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var log in Model.ExternalLogs)
+                                    {
+                                        <tr>
+                                            <td class="text-truncate" style="max-width: 180px;">@log.To</td>
+                                            <td class="text-truncate fw-semibold" style="max-width: 220px;">@log.Subject</td>
+                                            <td class="small text-muted">@log.SentAt.ToString("g")</td>
+                                            <td>
+                                                @if (log.Status == EmailManager.Domain.Enums.EmailStatus.Sent)
+                                                {
+                                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Gönderildi</span>
+                                                }
+                                                else if (log.Status == EmailManager.Domain.Enums.EmailStatus.Failed)
+                                                {
+                                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">Hata</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill">Beklemede</span>
+                                                }
+                                            </td>
+                                            <td class="small text-danger text-truncate" style="max-width: 200px;" title="@log.ErrorMessage">
+                                                @(string.IsNullOrEmpty(log.ErrorMessage) ? "-" : log.ErrorMessage)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="d-flex justify-content-center border-top py-3">
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="?tab=@Model.ActiveTab&page=@(Model.CurrentPage - 1)">Önceki</a>
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                        <a class="page-link" href="?tab=@Model.ActiveTab&page=@i">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                                    <a class="page-link" href="?tab=@Model.ActiveTab&page=@(Model.CurrentPage + 1)">Sonraki</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mail View Modal -->
+<div class="modal fade" id="allMailsViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1 text-uppercase" style="font-size: 0.7rem;">
+                    <i class="bi bi-eye-slash-fill me-1"></i> Admin Denetim Deşifresi (AES-256)
+                </span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-3 px-4">
+                <h4 class="fw-bold mb-3 text-slate-900" id="modal-subject">...</h4>
+                
+                <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
+                    <div class="bg-indigo-subtle text-indigo rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="bi bi-person-fill" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="mb-0 fw-bold text-slate-800 text-truncate" id="modal-from">...</h6>
+                            <span class="text-muted small" id="modal-date">...</span>
+                        </div>
+                        <div class="text-muted small text-truncate" id="modal-to">Kime: ...</div>
+                    </div>
+                </div>
+
+                <div class="mail-body-content text-slate-700 bg-light p-3 rounded-3" style="min-height: 200px; white-space: pre-wrap; overflow-y: auto; max-height: 400px;" id="modal-body">
+                    ...
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                <button type="button" class="btn btn-secondary btn-sm rounded-3" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .text-indigo { color: #6366f1 !important; }
+        .bg-indigo-subtle { background-color: rgba(99, 102, 241, 0.1); }
+        .text-slate-800 { color: #1e293b; }
+        .text-slate-900 { color: #0f172a; }
+        .nav-tabs .nav-link {
+            border-radius: 0;
+            background: transparent;
+        }
+        .nav-tabs .nav-link.active {
+            border-bottom: 2px solid #6366f1 !important;
+            color: #6366f1 !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        let viewModal;
+        document.addEventListener("DOMContentLoaded", () => {
+            viewModal = new bootstrap.Modal(document.getElementById('allMailsViewModal'));
+        });
+
+        async function viewInternalMail(id) {
+            try {
+                const response = await fetch(`?handler=DecryptDetails&id=${id}`);
+                if (!response.ok) {
+                    showToast("Mesaj detayları alınamadı veya yetkiniz yok.", "error");
+                    return;
+                }
+                const data = await response.json();
+                
+                document.getElementById('modal-subject').innerText = data.subject;
+                document.getElementById('modal-from').innerText = data.fromEmail;
+                document.getElementById('modal-to').innerText = `Kime: ${data.toEmail}`;
+                document.getElementById('modal-date').innerText = data.sentAt;
+
+                const bodyEl = document.getElementById('modal-body');
+                if (data.isHtml) {
+                    bodyEl.innerHTML = data.body;
+                } else {
+                    bodyEl.textContent = data.body;
+                }
+
+                viewModal.show();
+            } catch (err) {
+                console.error(err);
+                showToast("Sistem hatası.", "error");
+            }
+        }
+    </script>
+}

@@ -1,3 +1,4 @@
+using EmailManager.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,10 @@ namespace EmailManager.Web.Pages.Account;
 [AllowAnonymous]
 public class LoginModel : PageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ILogger<LoginModel> _logger;
 
-    public LoginModel(
-        SignInManager<IdentityUser> signInManager,
-        ILogger<LoginModel> logger)
+    public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
         _logger = logger;
@@ -48,18 +47,22 @@ public class LoginModel : PageModel
     {
         returnUrl ??= Url.Content("~/Email/Send");
 
-        if (!ModelState.IsValid)
-            return Page();
+        if (!ModelState.IsValid) return Page();
 
         var result = await _signInManager.PasswordSignInAsync(
-            Input.Username,
-            Input.Password,
-            isPersistent: false,
-            lockoutOnFailure: false);
+            Input.Username, Input.Password,
+            isPersistent: false, lockoutOnFailure: false);
 
         if (result.Succeeded)
         {
             _logger.LogInformation("Kullanıcı giriş yaptı: {Username}", Input.Username);
+            
+            var user = await _signInManager.UserManager.FindByNameAsync(Input.Username);
+            if (user is not null && await _signInManager.UserManager.IsInRoleAsync(user, "Admin") && returnUrl.EndsWith("/Email/Send"))
+            {
+                returnUrl = Url.Content("~/Admin/Index");
+            }
+            
             return LocalRedirect(returnUrl);
         }
 

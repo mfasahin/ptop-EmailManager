@@ -1,0 +1,158 @@
+@page
+@model EmailManager.Web.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 text-slate-800 fw-bold"><i class="bi bi-people-fill text-indigo me-2"></i>Kullanıcı Yönetimi</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 30%;">Kullanıcı</th>
+                                <th style="width: 30%;">E-posta</th>
+                                <th style="width: 15%;">Rol</th>
+                                <th style="width: 15%;">Kayıt Tarihi</th>
+                                <th style="width: 10%;" class="text-center">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.UsersList)
+                            {
+                                <tr id="user-row-@user.Id">
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="bg-indigo-subtle text-indigo rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
+                                                @user.FullName[0]
+                                            </div>
+                                            <div class="fw-semibold text-slate-800">
+                                                @user.FullName
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        @if (user.Role == "Admin")
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" id="badge-role-@user.Id">Yönetici</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill" id="badge-role-@user.Id">Kullanıcı</span>
+                                        }
+                                    </td>
+                                    <td class="small text-muted">@user.CreatedAt.ToString("g")</td>
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-light btn-sm rounded-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm" style="border-radius: 12px; font-size: 0.85rem;">
+                                                <li>
+                                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" onclick="toggleRole('@user.Id')">
+                                                        <i class="bi bi-shield-check text-warning"></i> Rolü Değiştir (Admin/User)
+                                                    </button>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <button class="dropdown-item py-2 text-danger d-flex align-items-center gap-2" onclick="deleteUser('@user.Id')">
+                                                        <i class="bi bi-trash3-fill"></i> Kullanıcıyı Sil
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .text-indigo { color: #6366f1; }
+        .bg-indigo-subtle { background-color: rgba(99, 102, 241, 0.1); }
+        .text-slate-800 { color: #1e293b; }
+        .dropdown-item {
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .dropdown-item:hover {
+            background-color: #f8fafc;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        async function toggleRole(userId) {
+            if (!confirm("Kullanıcının yetkilerini değiştirmek istediğinizden emin misiniz?")) return;
+
+            try {
+                const response = await fetch(`?handler=ToggleRole&userId=${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showToast("Kullanıcı rolü güncellendi.");
+                    const badge = document.getElementById(`badge-role-${userId}`);
+                    if (badge) {
+                        if (data.newRole === "Admin") {
+                            badge.className = "badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill";
+                            badge.innerText = "Yönetici";
+                        } else {
+                            badge.className = "badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill";
+                            badge.innerText = "Kullanıcı";
+                        }
+                    }
+                } else {
+                    showToast(data.message || "İşlem gerçekleştirilemedi.", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Sistem hatası.", "error");
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm("DİKKAT: Kullanıcıyı sistemden tamamen silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!")) return;
+
+            try {
+                const response = await fetch(`?handler=DeleteUser&userId=${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showToast("Kullanıcı silindi.");
+                    const row = document.getElementById(`user-row-${userId}`);
+                    if (row) {
+                        row.remove();
+                    }
+                } else {
+                    showToast(data.message || "Kullanıcı silinemedi.", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Sistem hatası.", "error");
+            }
+        }
+    </script>
+}

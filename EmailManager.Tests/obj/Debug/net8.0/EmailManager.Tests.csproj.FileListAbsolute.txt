@@ -324,3 +324,4 @@ C:\Users\fatih\projelerim\ptop\EmailManager.Tests\obj\Debug\net8.0\refint\EmailM
 C:\Users\fatih\projelerim\ptop\EmailManager.Tests\obj\Debug\net8.0\EmailManager.Tests.pdb
 C:\Users\fatih\projelerim\ptop\EmailManager.Tests\obj\Debug\net8.0\EmailManager.Tests.genruntimeconfig.cache
 C:\Users\fatih\projelerim\ptop\EmailManager.Tests\obj\Debug\net8.0\ref\EmailManager.Tests.dll
+C:\Users\fatih\projelerim\ptop\EmailManager.Tests\obj\Debug\net8.0\EmailManager.Tests.sourcelink.json

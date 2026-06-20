@@ -6,6 +6,9 @@ namespace EmailManager.Domain.Entities;
 /// </summary>
 public class EmailMessage
 {
+    /// <summary>Gönderenin e-posta adresi (dahili postalar için zorunlu).</summary>
+    public string? From { get; set; }
+
     /// <summary>Alıcının e-posta adresi.</summary>
     public string To { get; set; } = string.Empty;
 

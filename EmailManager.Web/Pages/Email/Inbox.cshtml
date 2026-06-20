@@ -1,0 +1,228 @@
+@page
+@model EmailManager.Web.Pages.Email.InboxModel
+@{
+    ViewData["Title"] = "Gelen Kutusu";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <h5 class="mb-0 text-slate-800 fw-bold"><i class="bi bi-inbox-fill text-indigo me-2"></i>Gelen Kutusu</h5>
+                    @if (Model.UnreadCount > 0)
+                    {
+                        <span class="badge bg-danger rounded-pill">@Model.UnreadCount Okunmamış</span>
+                    }
+                </div>
+                <div class="text-muted small">
+                    Toplam: @Model.TotalCount mesaj
+                </div>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Mails.Any())
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-envelope-open text-muted" style="font-size: 3rem;"></i>
+                        <h6 class="text-muted mt-3">Gelen kutunuz boş.</h6>
+                        <p class="text-muted small">@@ptop.com uzantılı diğer kullanıcılardan gelen güvenli postalar burada görünecektir.</p>
+                        <a href="/Email/Send" class="btn btn-primary btn-sm mt-2">
+                            <i class="bi bi-pencil-square me-1"></i> İlk E-postayı Gönder
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 25%;">Kimden</th>
+                                    <th style="width: 45%;">Konu</th>
+                                    <th style="width: 20%;">Tarih</th>
+                                    <th style="width: 10%;" class="text-center">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var mail in Model.Mails)
+                                {
+                                    <tr class="@(mail.IsRead ? "text-secondary" : "fw-bold text-dark table-active-row")" 
+                                        id="mail-row-@mail.Id" 
+                                        style="cursor: pointer; transition: background 0.15s ease;"
+                                        onclick="viewMail(@mail.Id)">
+                                        <td class="text-truncate">
+                                            <i class="bi @(mail.IsRead ? "bi-envelope-open text-muted" : "bi-envelope-fill text-primary") me-2"></i>
+                                            @mail.FromEmail
+                                        </td>
+                                        <td class="text-truncate">
+                                            @mail.Subject
+                                        </td>
+                                        <td class="small text-muted text-truncate">
+                                            @mail.SentAt.ToString("g")
+                                        </td>
+                                        <td class="text-center" onclick="event.stopPropagation();">
+                                            <button class="btn btn-link btn-sm text-danger p-0" onclick="deleteMail(@mail.Id)" title="Sil">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    @if (Model.TotalPages > 1)
+                    {
+                        <div class="d-flex justify-content-center border-top py-3">
+                            <nav>
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)">Önceki</a>
+                                    </li>
+                                    @for (int i = 1; i <= Model.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                            <a class="page-link" href="?page=@i">@i</a>
+                                        </li>
+                                    }
+                                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)">Sonraki</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mail View Modal -->
+<div class="modal fade" id="viewMailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+            <div class="modal-header border-bottom-0 pb-0">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 text-uppercase" style="font-size: 0.7rem;">
+                    <i class="bi bi-shield-lock-fill me-1"></i> AES-256 Şifreli Posta
+                </span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-3 px-4">
+                <h4 class="fw-bold mb-3 text-slate-900" id="modal-subject">...</h4>
+                
+                <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
+                    <div class="bg-indigo-subtle text-indigo rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="bi bi-person-fill" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="mb-0 fw-bold text-slate-800 text-truncate" id="modal-from">...</h6>
+                            <span class="text-muted small" id="modal-date">...</span>
+                        </div>
+                        <div class="text-muted small text-truncate" id="modal-to">Kime: ...</div>
+                    </div>
+                </div>
+
+                <div class="mail-body-content text-slate-700 bg-light p-3 rounded-3" style="min-height: 200px; white-space: pre-wrap; overflow-y: auto; max-height: 400px;" id="modal-body">
+                    ...
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                <button type="button" class="btn btn-secondary btn-sm rounded-3" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .text-indigo { color: #6366f1; }
+        .bg-indigo-subtle { background-color: rgba(99, 102, 241, 0.1); }
+        .text-slate-800 { color: #1e293b; }
+        .text-slate-900 { color: #0f172a; }
+        .table-active-row {
+            background-color: rgba(99, 102, 241, 0.03) !important;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(99, 102, 241, 0.06) !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        let mailModal;
+        document.addEventListener("DOMContentLoaded", () => {
+            mailModal = new bootstrap.Modal(document.getElementById('viewMailModal'));
+        });
+
+        async function viewMail(id) {
+            try {
+                const response = await fetch(`?handler=Details&id=${id}`);
+                if (!response.ok) {
+                    showToast("Mesaj detayları alınamadı.", "error");
+                    return;
+                }
+                const data = await response.json();
+                
+                document.getElementById('modal-subject').innerText = data.subject;
+                document.getElementById('modal-from').innerText = data.fromEmail;
+                document.getElementById('modal-to').innerText = `Kime: ${data.toEmail}`;
+                document.getElementById('modal-date').innerText = data.sentAt;
+
+                const bodyEl = document.getElementById('modal-body');
+                if (data.isHtml) {
+                    bodyEl.innerHTML = data.body;
+                } else {
+                    bodyEl.textContent = data.body;
+                }
+
+                // UI güncelle: Okunmuş satır stilini uygula
+                const row = document.getElementById(`mail-row-${id}`);
+                if (row) {
+                    row.classList.remove('fw-bold', 'text-dark', 'table-active-row');
+                    row.classList.add('text-secondary');
+                    const icon = row.querySelector('.bi-envelope-fill');
+                    if (icon) {
+                        icon.classList.remove('bi-envelope-fill', 'text-primary');
+                        icon.classList.add('bi-envelope-open', 'text-muted');
+                    }
+                }
+
+                mailModal.show();
+            } catch (err) {
+                console.error(err);
+                showToast("Sistem hatası.", "error");
+            }
+        }
+
+        async function deleteMail(id) {
+            if (!confirm("Bu e-postayı silmek istediğinizden emin misiniz?")) return;
+
+            try {
+                const response = await fetch(`?handler=Delete&id=${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                if (response.ok) {
+                    showToast("E-posta silindi.");
+                    const row = document.getElementById(`mail-row-${id}`);
+                    if (row) {
+                        row.remove();
+                    }
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showToast("E-posta silinemedi.", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Sistem hatası.", "error");
+            }
+        }
+    </script>
+}

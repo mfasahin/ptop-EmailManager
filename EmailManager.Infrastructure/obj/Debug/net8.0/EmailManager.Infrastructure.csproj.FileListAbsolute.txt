@@ -36,3 +36,4 @@ C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\obj\Debug\net8.0\refi
 C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\obj\Debug\net8.0\EmailManager.Infrastructure.pdb
 C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\obj\Debug\net8.0\EmailManager.Infrastructure.genruntimeconfig.cache
 C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\obj\Debug\net8.0\ref\EmailManager.Infrastructure.dll
+C:\Users\fatih\projelerim\ptop\EmailManager.Infrastructure\obj\Debug\net8.0\EmailManager.Infrastructure.sourcelink.json

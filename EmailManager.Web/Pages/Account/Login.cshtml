@@ -115,6 +115,23 @@
             border-radius: 10px;
             font-size: 0.875rem;
         }
+
+        .divider {
+            display: flex; align-items: center; gap: 1rem;
+            margin: 1.25rem 0;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+        .divider span { color: #475569; font-size: 0.8rem; }
+
+        .register-link { text-align: center; }
+        .register-link a {
+            color: #6366f1; text-decoration: none; font-weight: 500;
+            font-size: 0.9rem; transition: color 0.2s;
+        }
+        .register-link a:hover { color: #818cf8; }
     </style>
 </head>
 <body>
@@ -154,6 +171,15 @@
             </span>
         </button>
     </form>
+
+    <div class="divider"><span>veya</span></div>
+
+    <div class="register-link">
+        <a href="/Account/Register">
+            <i class="bi bi-person-plus me-1"></i>
+            Hesabın yok mu? Kayıt ol
+        </a>
+    </div>
 </div>
 
 <script>
