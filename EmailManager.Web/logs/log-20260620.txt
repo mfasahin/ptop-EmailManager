@@ -1033,3 +1033,437 @@ FROM "InternalMails" AS "i"
 ORDER BY "i"."SentAt" DESC
 LIMIT @__p_0
 2026-06-20 16:02:53.107 +03:00 [INF] HTTP GET /Admin/Index responded 200 in 5.8770 ms
+2026-06-20 16:06:26.410 +03:00 [INF] HTTP POST /Account/Logout responded 302 in 1.9216 ms
+2026-06-20 16:06:26.416 +03:00 [INF] HTTP GET /Account/Login responded 200 in 1.8604 ms
+2026-06-20 16:06:34.012 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:06:34.079 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ClaimType", "a"."ClaimValue", "a"."UserId"
+FROM "AspNetUserClaims" AS "a"
+WHERE "a"."UserId" = @__user_Id_0
+2026-06-20 16:06:34.079 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a0"."Name"
+FROM "AspNetUserRoles" AS "a"
+INNER JOIN "AspNetRoles" AS "a0" ON "a"."RoleId" = "a0"."Id"
+WHERE "a"."UserId" = @__userId_0
+2026-06-20 16:06:34.080 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 4)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2026-06-20 16:06:34.080 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__role_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."ClaimType", "a"."ClaimValue"
+FROM "AspNetRoleClaims" AS "a"
+WHERE "a"."RoleId" = @__role_Id_0
+2026-06-20 16:06:34.081 +03:00 [INF] Kullanıcı giriş yaptı: sahinfatih
+2026-06-20 16:06:34.082 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:06:34.082 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+2026-06-20 16:06:34.083 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (Size = 36), @__p_1='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."UserId", "a"."RoleId"
+FROM "AspNetUserRoles" AS "a"
+WHERE "a"."UserId" = @__p_0 AND "a"."RoleId" = @__p_1
+LIMIT 1
+2026-06-20 16:06:34.083 +03:00 [INF] HTTP POST /Account/Login responded 302 in 73.5038 ms
+2026-06-20 16:06:34.089 +03:00 [INF] HTTP GET /Email/Send responded 200 in 1.4400 ms
+2026-06-20 16:06:35.023 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:06:35.024 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:06:35.024 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:06:35.025 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 3.0872 ms
+2026-06-20 16:06:36.688 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:36.688 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.7734 ms
+2026-06-20 16:06:37.131 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:37.131 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.6137 ms
+2026-06-20 16:06:37.234 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:37.234 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.3240 ms
+2026-06-20 16:06:37.711 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:37.711 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.2920 ms
+2026-06-20 16:06:37.852 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:37.852 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.4353 ms
+2026-06-20 16:06:37.981 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:37.981 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.4585 ms
+2026-06-20 16:06:38.235 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:38.235 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.6647 ms
+2026-06-20 16:06:38.358 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:38.358 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.3255 ms
+2026-06-20 16:06:39.331 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:39.331 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.3680 ms
+2026-06-20 16:06:39.462 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:06:39.462 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.1946 ms
+2026-06-20 16:06:41.202 +03:00 [INF] HTTP POST /Account/Logout responded 302 in 0.5560 ms
+2026-06-20 16:06:41.207 +03:00 [INF] HTTP GET /Account/Login responded 200 in 0.9712 ms
+2026-06-20 16:06:50.173 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 11)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:06:50.239 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ClaimType", "a"."ClaimValue", "a"."UserId"
+FROM "AspNetUserClaims" AS "a"
+WHERE "a"."UserId" = @__user_Id_0
+2026-06-20 16:06:50.240 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a0"."Name"
+FROM "AspNetUserRoles" AS "a"
+INNER JOIN "AspNetRoles" AS "a0" ON "a"."RoleId" = "a0"."Id"
+WHERE "a"."UserId" = @__userId_0
+2026-06-20 16:06:50.241 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 4)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2026-06-20 16:06:50.241 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__role_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."ClaimType", "a"."ClaimValue"
+FROM "AspNetRoleClaims" AS "a"
+WHERE "a"."RoleId" = @__role_Id_0
+2026-06-20 16:06:50.242 +03:00 [INF] Kullanıcı giriş yaptı: sahinmehmet
+2026-06-20 16:06:50.242 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 11)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:06:50.243 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+2026-06-20 16:06:50.243 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (Size = 36), @__p_1='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."UserId", "a"."RoleId"
+FROM "AspNetUserRoles" AS "a"
+WHERE "a"."UserId" = @__p_0 AND "a"."RoleId" = @__p_1
+LIMIT 1
+2026-06-20 16:06:50.243 +03:00 [INF] HTTP POST /Account/Login responded 302 in 71.0313 ms
+2026-06-20 16:06:50.249 +03:00 [INF] HTTP GET /Email/Send responded 200 in 1.3832 ms
+2026-06-20 16:06:51.396 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:06:51.396 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:06:51.397 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:06:51.397 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 2.7968 ms
+2026-06-20 16:06:53.797 +03:00 [INF] HTTP POST /Account/Logout responded 302 in 0.5862 ms
+2026-06-20 16:06:53.803 +03:00 [INF] HTTP GET /Account/Login responded 200 in 1.2877 ms
+2026-06-20 16:07:01.123 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:07:01.190 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ClaimType", "a"."ClaimValue", "a"."UserId"
+FROM "AspNetUserClaims" AS "a"
+WHERE "a"."UserId" = @__user_Id_0
+2026-06-20 16:07:01.190 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a0"."Name"
+FROM "AspNetUserRoles" AS "a"
+INNER JOIN "AspNetRoles" AS "a0" ON "a"."RoleId" = "a0"."Id"
+WHERE "a"."UserId" = @__userId_0
+2026-06-20 16:07:01.191 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 4)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2026-06-20 16:07:01.191 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__role_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."ClaimType", "a"."ClaimValue"
+FROM "AspNetRoleClaims" AS "a"
+WHERE "a"."RoleId" = @__role_Id_0
+2026-06-20 16:07:01.192 +03:00 [INF] Kullanıcı giriş yaptı: sahinfatih
+2026-06-20 16:07:01.192 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:07:01.192 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+2026-06-20 16:07:01.193 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (Size = 36), @__p_1='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."UserId", "a"."RoleId"
+FROM "AspNetUserRoles" AS "a"
+WHERE "a"."UserId" = @__p_0 AND "a"."RoleId" = @__p_1
+LIMIT 1
+2026-06-20 16:07:01.193 +03:00 [INF] HTTP POST /Account/Login responded 302 in 71.3572 ms
+2026-06-20 16:07:01.199 +03:00 [INF] HTTP GET /Email/Send responded 200 in 0.8016 ms
+2026-06-20 16:07:59.025 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2026-06-20 16:07:59.028 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (Size = 49), @p1='?' (Size = 49), @p2='?' (Size = 19), @p3='?' (DbType = Boolean), @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = DateTime), @p8='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "InternalMails" ("EncryptedBody", "EncryptedSubject", "FromEmail", "IsDeletedByRecipient", "IsDeletedBySender", "IsHtml", "IsRead", "SentAt", "ToEmail")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8)
+RETURNING "Id";
+2026-06-20 16:07:59.033 +03:00 [INF] Dahili posta iletildi: sahinfatih@ptop.com → sahinmehmet@ptop.com
+2026-06-20 16:07:59.034 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?' (Size = 4), @p3='?' (Size = 14), @p4='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "EmailLogs" ("ErrorMessage", "SentAt", "Status", "Subject", "To")
+VALUES (@p0, @p1, @p2, @p3, @p4)
+RETURNING "Id";
+2026-06-20 16:07:59.036 +03:00 [INF] Web üzerinden e-posta gönderildi → sahinmehmet@ptop.com
+2026-06-20 16:07:59.036 +03:00 [INF] HTTP POST /Email/Send responded 200 in 13.5871 ms
+2026-06-20 16:08:01.537 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:01.538 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:01.538 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:08:01.539 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 3.0522 ms
+2026-06-20 16:08:02.729 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:02.729 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 0.9902 ms
+2026-06-20 16:08:02.870 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:02.870 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.0566 ms
+2026-06-20 16:08:03.128 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:03.129 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.0260 ms
+2026-06-20 16:08:03.264 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:03.264 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.1690 ms
+2026-06-20 16:08:05.794 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:05.796 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "InternalMails" SET "IsDeletedByRecipient" = @p0
+WHERE "Id" = @p1
+RETURNING 1;
+2026-06-20 16:08:05.799 +03:00 [INF] HTTP POST /Email/Inbox responded 200 in 7.0448 ms
+2026-06-20 16:08:08.342 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:08.342 +03:00 [INF] HTTP POST /Email/Inbox responded 200 in 1.6182 ms
+2026-06-20 16:08:09.422 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:09.422 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:09.422 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 19), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:08:09.424 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 2.8086 ms
+2026-06-20 16:08:10.706 +03:00 [INF] HTTP POST /Account/Logout responded 302 in 0.6679 ms
+2026-06-20 16:08:10.712 +03:00 [INF] HTTP GET /Account/Login responded 200 in 1.3440 ms
+2026-06-20 16:08:17.840 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 11)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:08:17.904 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ClaimType", "a"."ClaimValue", "a"."UserId"
+FROM "AspNetUserClaims" AS "a"
+WHERE "a"."UserId" = @__user_Id_0
+2026-06-20 16:08:17.905 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a0"."Name"
+FROM "AspNetUserRoles" AS "a"
+INNER JOIN "AspNetRoles" AS "a0" ON "a"."RoleId" = "a0"."Id"
+WHERE "a"."UserId" = @__userId_0
+2026-06-20 16:08:17.905 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 4)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2026-06-20 16:08:17.905 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__role_Id_0='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."ClaimType", "a"."ClaimValue"
+FROM "AspNetRoleClaims" AS "a"
+WHERE "a"."RoleId" = @__role_Id_0
+2026-06-20 16:08:17.906 +03:00 [INF] Kullanıcı giriş yaptı: sahinmehmet
+2026-06-20 16:08:17.906 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 11)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."AccessFailedCount", "a"."ConcurrencyStamp", "a"."CreatedAt", "a"."Email", "a"."EmailConfirmed", "a"."FirstName", "a"."LastName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+FROM "AspNetUsers" AS "a"
+WHERE "a"."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2026-06-20 16:08:17.906 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+2026-06-20 16:08:17.907 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (Size = 36), @__p_1='?' (Size = 36)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."UserId", "a"."RoleId"
+FROM "AspNetUserRoles" AS "a"
+WHERE "a"."UserId" = @__p_0 AND "a"."RoleId" = @__p_1
+LIMIT 1
+2026-06-20 16:08:17.907 +03:00 [INF] HTTP POST /Account/Login responded 302 in 68.5877 ms
+2026-06-20 16:08:17.913 +03:00 [INF] HTTP GET /Email/Send responded 200 in 1.3082 ms
+2026-06-20 16:08:19.350 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:19.350 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:08:19.351 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:08:19.351 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 2.3919 ms
+2026-06-20 16:08:20.450 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:20.451 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "InternalMails" SET "IsRead" = @p0
+WHERE "Id" = @p1
+RETURNING 1;
+2026-06-20 16:08:20.452 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 2.7277 ms
+2026-06-20 16:08:20.881 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:20.882 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.2783 ms
+2026-06-20 16:08:21.008 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:21.008 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.3187 ms
+2026-06-20 16:08:21.843 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:08:21.843 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.2132 ms
+2026-06-20 16:10:42.192 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:10:42.193 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:10:42.194 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:10:42.195 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 4.7351 ms
+2026-06-20 16:10:42.995 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:10:42.995 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.5544 ms
+2026-06-20 16:10:43.353 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."Id" = @__id_0
+LIMIT 1
+2026-06-20 16:10:43.353 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 1.4394 ms
+2026-06-20 16:10:46.385 +03:00 [INF] HTTP GET /Email/Send responded 200 in 0.5207 ms
+2026-06-20 16:10:48.549 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsRead") AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:10:48.549 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+2026-06-20 16:10:48.550 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__toEmail_0='?' (Size = 20), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "i"."Id", "i"."EncryptedBody", "i"."EncryptedSubject", "i"."FromEmail", "i"."IsDeletedByRecipient", "i"."IsDeletedBySender", "i"."IsHtml", "i"."IsRead", "i"."SentAt", "i"."ToEmail"
+FROM "InternalMails" AS "i"
+WHERE "i"."ToEmail" = @__toEmail_0 AND NOT ("i"."IsDeletedByRecipient")
+ORDER BY "i"."SentAt" DESC
+LIMIT @__p_2 OFFSET @__p_1
+2026-06-20 16:10:48.550 +03:00 [INF] HTTP GET /Email/Inbox responded 200 in 2.3627 ms
