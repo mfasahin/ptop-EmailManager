@@ -32,7 +32,10 @@ public class EmailLogRepository : IEmailLogRepository
         page = Math.Max(1, page);
         size = Math.Clamp(size, 1, 100);
 
-        var query = _context.EmailLogs.AsNoTracking();
+        var query = _context.EmailLogs
+            .Where(e => !e.To.EndsWith("@ptop.com"))
+            .AsNoTracking();
+
         var totalCount = await query.CountAsync(ct);
 
         var items = await query

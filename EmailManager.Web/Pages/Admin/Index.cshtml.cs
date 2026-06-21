@@ -45,7 +45,7 @@ public class IndexModel : PageModel
 
         // Posta Sayıları
         TotalInternalMailsCount = await _db.InternalMails.CountAsync(HttpContext.RequestAborted);
-        TotalExternalMailsCount = await _db.EmailLogs.CountAsync(HttpContext.RequestAborted);
+        TotalExternalMailsCount = await _db.EmailLogs.CountAsync(l => !l.To.EndsWith("@ptop.com"), HttpContext.RequestAborted);
 
         // Son Kayıt Olan 5 Kullanıcı
         RecentUsers = await _userManager.Users
@@ -56,6 +56,7 @@ public class IndexModel : PageModel
 
         // Son 5 Dış Posta Logu (SMTP)
         RecentExternalLogs = await _db.EmailLogs
+            .Where(l => !l.To.EndsWith("@ptop.com"))
             .OrderByDescending(l => l.SentAt)
             .Take(5)
             .AsNoTracking()
