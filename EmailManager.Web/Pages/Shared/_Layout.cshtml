@@ -204,6 +204,10 @@
                href="/Admin/AllMails">
                 <i class="bi bi-envelope-open-fill"></i> Tüm Postalar
             </a>
+            <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/History") ? "active" : "")"
+               href="/Email/History">
+                <i class="bi bi-clock-history"></i> Gönderim Geçmişi
+            </a>
             <div class="nav-label mt-3">E-posta</div>
         }
         else
@@ -218,6 +222,10 @@
         <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/Inbox") ? "active" : "")"
            href="/Email/Inbox">
             <i class="bi bi-inbox-fill"></i> Gelen Kutusu
+        </a>
+        <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Email/Sent") ? "active" : "")"
+           href="/Email/Sent">
+            <i class="bi bi-send-check-fill"></i> Gönderilen E-postalar
         </a>
         
         <div class="nav-label mt-3">Hesap</div>

@@ -9,7 +9,7 @@ namespace EmailManager.Web.Pages.Email;
 /// Gönderim geçmişi sayfasının PageModel'i.
 /// Server-side sayfalama Skip/Take ile uygulanır.
 /// </summary>
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class HistoryModel : PageModel
 {
     private readonly IEmailLogRepository _repository;

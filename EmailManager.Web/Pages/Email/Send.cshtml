@@ -87,8 +87,10 @@
                 <small class="text-muted">
                     <i class="bi bi-info-circle me-1"></i>
                     E-posta gönderimi dakikada <strong>5</strong> istekle sınırlıdır.
-                    Geçmiş gönderimlerinizi
-                    <a href="/Email/History" class="text-decoration-none">Gönderim Geçmişi</a> sayfasından görebilirsiniz.
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <span>Geçmiş gönderimlerinizi <a href="/Email/History" class="text-decoration-none">Gönderim Geçmişi</a> sayfasından görebilirsiniz.</span>
+                    }
                 </small>
             </div>
         </div>

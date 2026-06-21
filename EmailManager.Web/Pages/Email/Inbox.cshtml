@@ -4,7 +4,7 @@
     ViewData["Title"] = "Gelen Kutusu";
 }
 
-<div class="row">
+<div class="row" id="mail-list-section">
     <div class="col-12">
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
@@ -99,18 +99,18 @@
     </div>
 </div>
 
-<!-- Mail View Modal -->
-<div class="modal fade" id="viewMailModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
-            <div class="modal-header border-bottom-0 pb-0">
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 text-uppercase" style="font-size: 0.7rem;">
-                    <i class="bi bi-shield-lock-fill me-1"></i> AES-256 Şifreli Posta
-                </span>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Mail View Detail Section (In-page) -->
+<div class="row d-none" id="mail-detail-section">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                <button class="btn btn-outline-secondary btn-sm rounded-3 px-3" onclick="showMailList()">
+                    <i class="bi bi-arrow-left me-1"></i> Geri
+                </button>
+                <span class="text-muted small" id="detail-date"></span>
             </div>
-            <div class="modal-body pt-3 px-4">
-                <h4 class="fw-bold mb-3 text-slate-900" id="modal-subject">...</h4>
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-3 text-slate-900" id="detail-subject"></h4>
                 
                 <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
                     <div class="bg-indigo-subtle text-indigo rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
@@ -118,19 +118,14 @@
                     </div>
                     <div class="flex-grow-1 min-w-0">
                         <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="mb-0 fw-bold text-slate-800 text-truncate" id="modal-from">...</h6>
-                            <span class="text-muted small" id="modal-date">...</span>
+                            <h6 class="mb-0 fw-bold text-slate-800 text-truncate" id="detail-from"></h6>
                         </div>
-                        <div class="text-muted small text-truncate" id="modal-to">Kime: ...</div>
+                        <div class="text-muted small text-truncate" id="detail-to"></div>
                     </div>
                 </div>
 
-                <div class="mail-body-content text-slate-700 bg-light p-3 rounded-3" style="min-height: 200px; white-space: pre-wrap; overflow-y: auto; max-height: 400px;" id="modal-body">
-                    ...
+                <div class="mail-body-content text-slate-700 bg-light p-3 rounded-3" style="min-height: 250px; white-space: pre-wrap; overflow-y: auto; max-height: 500px;" id="detail-body">
                 </div>
-            </div>
-            <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
-                <button type="button" class="btn btn-secondary btn-sm rounded-3" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -153,11 +148,6 @@
 
 @section Scripts {
     <script>
-        let mailModal;
-        document.addEventListener("DOMContentLoaded", () => {
-            mailModal = new bootstrap.Modal(document.getElementById('viewMailModal'));
-        });
-
         async function viewMail(id) {
             try {
                 const response = await fetch(`?handler=Details&id=${id}`);
@@ -167,12 +157,12 @@
                 }
                 const data = await response.json();
                 
-                document.getElementById('modal-subject').innerText = data.subject;
-                document.getElementById('modal-from').innerText = data.fromEmail;
-                document.getElementById('modal-to').innerText = `Kime: ${data.toEmail}`;
-                document.getElementById('modal-date').innerText = data.sentAt;
+                document.getElementById('detail-subject').innerText = data.subject;
+                document.getElementById('detail-from').innerText = data.fromEmail;
+                document.getElementById('detail-to').innerText = `Kime: ${data.toEmail}`;
+                document.getElementById('detail-date').innerText = data.sentAt;
 
-                const bodyEl = document.getElementById('modal-body');
+                const bodyEl = document.getElementById('detail-body');
                 if (data.isHtml) {
                     bodyEl.innerHTML = data.body;
                 } else {
@@ -191,11 +181,18 @@
                     }
                 }
 
-                mailModal.show();
+                // Listeyi gizle, detayı göster
+                document.getElementById('mail-list-section').classList.add('d-none');
+                document.getElementById('mail-detail-section').classList.remove('d-none');
             } catch (err) {
                 console.error(err);
                 showToast("Sistem hatası.", "error");
             }
+        }
+
+        function showMailList() {
+            document.getElementById('mail-detail-section').classList.add('d-none');
+            document.getElementById('mail-list-section').classList.remove('d-none');
         }
 
         async function deleteMail(id) {
